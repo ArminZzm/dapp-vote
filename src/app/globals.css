@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.global-not-found {
+  .cls-1 {
+    fill: #d6b49a;
+  }
+  .cls-1,
+  .cls-10,
+  .cls-11,
+  .cls-13,
+  .cls-14,
+  .cls-15,
+  .cls-17,
+  .cls-2,
+  .cls-4,
+  .cls-5,
+  .cls-6 {
+    stroke: #000;
+  }
+  .cls-1,
+  .cls-11,
+  .cls-13,
+  .cls-14,
+  .cls-16,
+  .cls-8 {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cls-1,
+  .cls-10,
+  .cls-11,
+  .cls-12,
+  .cls-13,
+  .cls-14,
+  .cls-15,
+  .cls-16,
+  .cls-17,
+  .cls-2,
+  .cls-3,
+  .cls-4,
+  .cls-5,
+  .cls-6,
+  .cls-7,
+  .cls-8,
+  .cls-9 {
+    stroke-width: 3px;
+  }
+  .cls-2 {
+    fill: #020202;
+  }
+  .cls-10,
+  .cls-12,
+  .cls-15,
+  .cls-17,
+  .cls-2,
+  .cls-3,
+  .cls-4,
+  .cls-5,
+  .cls-6,
+  .cls-7,
+  .cls-9 {
+    stroke-miterlimit: 10;
+  }
+  .cls-3 {
+    fill: #818181;
+  }
+  .cls-12,
+  .cls-16,
+  .cls-3,
+  .cls-7,
+  .cls-8,
+  .cls-9 {
+    stroke: #191818;
+  }
+  .cls-4 {
+    fill: #dcdbda;
+  }
+  .cls-5 {
+    fill: #4ea7f1;
+  }
+  .cls-14,
+  .cls-6 {
+    fill: #f8f3ed;
+  }
+  .cls-16,
+  .cls-7 {
+    fill: #333;
+  }
+  .cls-13,
+  .cls-8 {
+    fill: none;
+  }
+  .cls-9 {
+    fill: #f8f59c;
+  }
+  .cls-10,
+  .cls-11 {
+    fill: #f3d2c9;
+  }
+  .cls-15 {
+    fill: #8bb174;
+  }
+  .cls-17 {
+    fill: #da4e22;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
