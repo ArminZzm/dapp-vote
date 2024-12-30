@@ -8,7 +8,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { type PollType } from '@/utils/type'
 import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
 import { CONTRACT_ADDRESS } from '@/utils/network'
-import { defaultStringifyWithBigInt } from '@/utils/format'
 
 const PollTab = () => {
   const { chainId, isConnected, isDisconnected } = useAccount()
@@ -39,7 +38,7 @@ const PollTab = () => {
       fetchData()
       setPollsTrigger(false)
     }
-  }, [pollsTrigger, refetch, setPollsTrigger])
+  }, [pollsTrigger])
 
   useEffect(() => {
     if (isConnected) {
@@ -47,12 +46,11 @@ const PollTab = () => {
         const { data } = await refetch()
         const result = data as PollType[]
         setPolls(result)
-        console.log(defaultStringifyWithBigInt(result))
       }
 
       fetchData()
     }
-  }, [isConnected, refetch])
+  }, [isConnected])
 
   useEffect(() => {
     if (isDisconnected) {

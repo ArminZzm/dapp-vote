@@ -66,13 +66,13 @@ const PollPage = () => {
       fetchData()
       setPollTrigger(false)
     }
-  }, [pollTrigger, refetchPoll, setPoll, setPollTrigger])
+  }, [pollTrigger])
 
   const { data: contestants, refetch: refetchContestants } = useReadContract({
     abi: DAAP_VOTES_ABI,
     address: CONTRACT_ADDRESS[chainId || 31337],
     functionName: 'getContestants',
-    args: [poll!.id]
+    args: [BigInt(id)]
   })
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const PollPage = () => {
       const result = contestants as ContestantType[]
       setContestedAddress(result.reduce((acc, curr) => acc.concat(curr.voter), contestedAddress))
     }
-  }, [contestants, contestedAddress])
+  }, [contestants])
 
   useEffect(() => {
     if (contestantsTrigger) {
@@ -124,7 +124,7 @@ const PollPage = () => {
 
       fetchData()
     }
-  }, [isConnected, refetchPoll])
+  }, [isConnected])
 
   useEffect(() => {
     if (isDisconnected) {

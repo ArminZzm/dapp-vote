@@ -25,7 +25,7 @@ const ContestantTab = ({ id }: { id: bigint }) => {
       setContestants(result)
       setAllVoters(result.reduce((acc, curr) => acc.concat(curr.voters), allVoters))
     }
-  }, [data, allVoters])
+  }, [data])
 
   useEffect(() => {
     if (contestantsTrigger) {
@@ -38,7 +38,7 @@ const ContestantTab = ({ id }: { id: bigint }) => {
       fetchData()
       setContestantsTrigger(false)
     }
-  }, [contestantsTrigger, refetch, setContestants, setContestantsTrigger])
+  }, [contestantsTrigger])
 
   return (
     <ul className="grid grid-cols-2 gap-x-12 gap-y-20 mt-6 mb-16">
