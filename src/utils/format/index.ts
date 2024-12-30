@@ -31,5 +31,3 @@ export const defaultStringifyWithBigInt: (obj: object) => string = (obj) => {
     return value
   })
 }
-
-export const isValidNumber = (value: any) => typeof value === 'number' && isFinite(value)

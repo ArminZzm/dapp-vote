@@ -11,7 +11,7 @@ import { CONTRACT_ADDRESS } from '@/utils/network'
 import { defaultStringifyWithBigInt } from '@/utils/format'
 
 const PollTab = () => {
-  const {chainId, isConnected, isDisconnected } = useAccount()
+  const { chainId, isConnected, isDisconnected } = useAccount()
   const [polls, setPolls] = useState<PollType[]>([])
   const { pollsTrigger, setPollsTrigger } = useGlobalStates()
 
@@ -39,7 +39,7 @@ const PollTab = () => {
       fetchData()
       setPollsTrigger(false)
     }
-  }, [pollsTrigger])
+  }, [pollsTrigger, refetch, setPollsTrigger])
 
   useEffect(() => {
     if (isConnected) {
@@ -52,7 +52,7 @@ const PollTab = () => {
 
       fetchData()
     }
-  }, [isConnected])
+  }, [isConnected, refetch])
 
   useEffect(() => {
     if (isDisconnected) {

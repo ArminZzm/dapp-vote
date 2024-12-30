@@ -54,6 +54,7 @@
     "ethers": "^6.13.4",
     "hardhat": "^2.22.17",
     "hardhat-gas-reporter": "^1.0.10",
+    "pino-pretty": "^13.0.0",
     "postcss": "^8",
     "solidity-coverage": "^0.8.14",
     "tailwindcss": "^3.4.1",
