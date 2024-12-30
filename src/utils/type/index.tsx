@@ -1,24 +1,24 @@
 export interface PollType {
-  id: BigInt
-  image: string
-  title: string
-  description: string
-  votes: BigInt
-  contestants: BigInt
-  deleted: boolean
-  director: string
-  startsAt: BigInt
-  endsAt: BigInt
-  timestamp: BigInt
-  voters: string[]
-  avatars: string[]
+  id: bigint;
+  image: string;
+  title: string;
+  description: string;
+  votes: bigint;
+  contestants: bigint;
+  deleted: boolean;
+  director: `0x${string}`;
+  startsAt: bigint;
+  endsAt: bigint;
+  timestamp: bigint;
+  voters: readonly `0x${string}`[];
+  avatars: readonly string[];
 }
 
 export interface ContestantType {
-  id: BigInt
-  image: string
-  name: string
-  voter: string
-  votes: BigInt
-  voters: string[]
+  id: bigint;
+  image: string;
+  name: string;
+  voter: `0x${string}`;
+  votes: bigint;
+  voters: readonly `0x${string}`[];
 }

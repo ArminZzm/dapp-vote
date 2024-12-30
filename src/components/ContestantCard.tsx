@@ -5,10 +5,9 @@ import { PiArrowFatUpLight } from 'react-icons/pi'
 import { useAccount, useWriteContract } from 'wagmi'
 import { toast } from 'react-toastify'
 import { useGlobalStates } from '@/context/GlobalStatesContext'
-import { type Address } from 'viem'
 import type { ContestantType } from '@/utils/type'
-import contractAddress from '../../artifacts/contractAddress.json'
-import contractABI from '../../artifacts/contracts/DappVotes.sol/DappVotes.json'
+import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
+import { CONTRACT_ADDRESS } from '@/utils/network'
 
 const ContestantCard = ({
   id,
@@ -16,12 +15,12 @@ const ContestantCard = ({
   allVoters,
   voteable
 }: {
-  id: BigInt
+  id: bigint
   contestant: ContestantType
   allVoters: string[]
   voteable: boolean
 }) => {
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const { setPollTrigger, setContestantsTrigger } = useGlobalStates()
   const { id: cid, image, name, voter, votes, voters } = contestant
   const { isPending, isError, writeContractAsync } = useWriteContract()
@@ -40,8 +39,8 @@ const ContestantCard = ({
     }
 
     await writeContractAsync({
-      abi: contractABI.abi,
-      address: contractAddress.address as Address,
+      abi: DAAP_VOTES_ABI,
+      address: CONTRACT_ADDRESS[chainId || 31337],
       functionName: 'vote',
       args: [id, cid]
     })
@@ -76,13 +75,12 @@ const ContestantCard = ({
         <button
           onClick={vote}
           disabled={checkAddressVoted()}
-          className={`w-[210px] h-12 rounded-full ${
-            checkAddressVoted()
-              ? 'bg-gray-600 hover:bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-400'
-          }`}
+          className={`w-[210px] h-12 rounded-full ${checkAddressVoted()
+            ? 'bg-gray-600 hover:bg-gray-400 cursor-not-allowed'
+            : 'bg-blue-600 hover:bg-blue-400'
+            }`}
         >
-          {voters.includes(address as string) ? 'Voted' : 'Vote'}
+          {voters.includes(address as `0x${string}`) ? 'Voted' : 'Vote'}
         </button>
         <div className="flex items-center gap-2">
           <div className="size-8 flex justify-center items-center rounded-xl bg-blue-950">

@@ -6,19 +6,18 @@ import { useAccount, useReadContract } from 'wagmi'
 import PollCard from './PollCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { type PollType } from '@/utils/type'
-import { type Address } from 'viem'
-import contractAddress from '../../artifacts/contractAddress.json'
-import contractABI from '../../artifacts/contracts/DappVotes.sol/DappVotes.json'
+import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
+import { CONTRACT_ADDRESS } from '@/utils/network'
 import { defaultStringifyWithBigInt } from '@/utils/format'
 
 const PollTab = () => {
-  const { isConnected, isDisconnected } = useAccount()
+  const {chainId, isConnected, isDisconnected } = useAccount()
   const [polls, setPolls] = useState<PollType[]>([])
   const { pollsTrigger, setPollsTrigger } = useGlobalStates()
 
   const { data, isLoading, refetch } = useReadContract({
-    abi: contractABI.abi,
-    address: contractAddress.address as Address,
+    abi: DAAP_VOTES_ABI,
+    address: CONTRACT_ADDRESS[chainId || 31337],
     functionName: 'getPolls'
   })
 

@@ -1,4 +1,5 @@
 require('@nomicfoundation/hardhat-toolbox')
+require('dotenv').config()
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -6,7 +7,17 @@ module.exports = {
   defaultNetwork: 'localhost',
   networks: {
     localhost: {
-      url: 'http:127.0.0.1:8545'
+      url: process.env.NEXT_PUBLIC_HARDHAT_JSON_RPC_URL
+    },
+    sepolia: {
+      chainId: 11155111,
+      url: process.env.NEXT_PUBLIC_SEPOLIA_JSON_RPC_URL,
+      accounts: [process.env.NEXT_PUBLIC_SEPOLIA_ACCOUNT_PRIVATE_KEY]
+    }
+  },
+  etherscan: {
+    apiKey: {
+      sepolia: process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY
     }
   }
 }

@@ -13,22 +13,21 @@ import { MdDelete } from 'react-icons/md'
 import PollModal from '@/components/PollModal'
 import ContestantTab from '@/components/ContestantTab'
 import { Skeleton } from '@/components/ui/skeleton'
-import { type Address } from 'viem'
 import type { ContestantType, PollType } from '@/utils/type'
-import contractAddress from '../../../../artifacts/contractAddress.json'
-import contractABI from '../../../../artifacts/contracts/DappVotes.sol/DappVotes.json'
+import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
+import { CONTRACT_ADDRESS } from '@/utils/network'
 import { dateLocalizedFormat, formatAddress } from '@/utils/format'
 
 const regex = /^[1-9]\d*$/
 
-const page = () => {
+const PollPage = () => {
   const params = useParams()
   const id = useCreation(() => params['id'], [params]) as string
   if (!regex.test(id)) {
     notFound()
   }
 
-  const { address, isConnected, isDisconnected } = useAccount()
+  const { chainId, address, isConnected, isDisconnected } = useAccount()
   const { openPollModal, pollTrigger, setPollTrigger, contestantsTrigger, setContestantsTrigger } =
     useGlobalStates()
   const [operation, setOperation] = useState<string>('')
@@ -40,8 +39,8 @@ const page = () => {
     isLoading,
     refetch: refetchPoll
   } = useReadContract({
-    abi: contractABI.abi,
-    address: contractAddress.address as Address,
+    abi: DAAP_VOTES_ABI,
+    address: CONTRACT_ADDRESS[chainId || 31337],
     functionName: 'getPoll',
     args: [BigInt(id)]
   })
@@ -70,10 +69,10 @@ const page = () => {
   }, [pollTrigger])
 
   const { data: contestants, refetch: refetchContestants } = useReadContract({
-    abi: contractABI.abi,
-    address: contractAddress.address as Address,
+    abi: DAAP_VOTES_ABI,
+    address: CONTRACT_ADDRESS[chainId || 31337],
     functionName: 'getContestants',
-    args: [poll?.id]
+    args: [poll!.id]
   })
 
   useEffect(() => {
@@ -231,9 +230,8 @@ const page = () => {
             <button
               disabled={checkAddressContested()}
               onClick={createContestant}
-              className={`w-[148px] h-[42px] rounded-full bg-white text-black ${
-                checkAddressContested() ? 'cursor-not-allowed' : ''
-              }`}
+              className={`w-[148px] h-[42px] rounded-full bg-white text-black ${checkAddressContested() ? 'cursor-not-allowed' : ''
+                }`}
             >
               Contest
             </button>
@@ -251,4 +249,4 @@ const page = () => {
   }
 }
 
-export default page
+export default PollPage

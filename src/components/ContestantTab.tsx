@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
-import { type Address } from 'viem'
-import { useReadContract } from 'wagmi'
+import { useAccount, useReadContract } from 'wagmi'
 import type { ContestantType } from '@/utils/type'
-import contractAddress from '../../artifacts/contractAddress.json'
-import contractABI from '../../artifacts/contracts/DappVotes.sol/DappVotes.json'
+import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
+import { CONTRACT_ADDRESS } from '@/utils/network'
 import ContestantCard from './ContestantCard'
 import { useGlobalStates } from '@/context/GlobalStatesContext'
 
-const ContestantTab = ({ id }: { id: BigInt }) => {
+const ContestantTab = ({ id }: { id: bigint }) => {
+  const { chainId } = useAccount()
   const { contestantsTrigger, setContestantsTrigger } = useGlobalStates()
   const [contestants, setContestants] = useState<ContestantType[]>([])
   const [allVoters, setAllVoters] = useState<string[]>([])
 
   const { data, refetch } = useReadContract({
-    abi: contractABI.abi,
-    address: contractAddress.address as Address,
+    abi: DAAP_VOTES_ABI,
+    address: CONTRACT_ADDRESS[chainId || 31337],
     functionName: 'getContestants',
     args: [id]
   })

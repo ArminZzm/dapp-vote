@@ -4,39 +4,34 @@ import { useRouter } from 'next/navigation'
 import { useGlobalStates } from '@/context/GlobalStatesContext'
 import { IoClose } from 'react-icons/io5'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { useWriteContract } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import { toast } from 'react-toastify'
 import { MdDelete } from 'react-icons/md'
 import { PATTERN, date2BigInt, dateFormat } from '@/utils/format'
-import { type Address } from 'viem'
 import type { PollType } from '@/utils/type'
-import contractAddress from '../../artifacts/contractAddress.json'
-import contractABI from '../../artifacts/contracts/DappVotes.sol/DappVotes.json'
+import { DAAP_VOTES_ABI } from '@/utils/abis/DappVotes'
+import { CONTRACT_ADDRESS } from '@/utils/network'
 
-const operationConfig = {
+const operationConfig: Record<string, string[]> = {
   'Add Poll': [
-    'createPoll',
     'Creating',
     'Create Poll',
     'Unable to create poll, please try again!',
     'Poll created successfully!'
   ],
   'Edit Poll': [
-    'updatePoll',
     'Updating',
     'Update Poll',
     'Unable to update poll, please try again!',
     'Poll updated successfully!'
   ],
   'Delete Poll': [
-    'deletePoll',
     'Deleting',
     'Delete Poll',
     'Unable to delete poll, please try again!',
     'Poll deleted successfully!'
   ],
   'Become a Contestant': [
-    'contest',
     'Contesting',
     'Contest Now',
     'Unable to contest, please try again!',
@@ -45,8 +40,9 @@ const operationConfig = {
 }
 
 const PollForm = ({ operation, poll }: { operation: string; poll?: PollType }) => {
-  const [functionName, pendingbutton, completedButton, errorMessage, successMessage] =
-    operationConfig[operation as 'Add Poll' | 'Edit Poll']
+  const { chainId } = useAccount()
+  const [pendingbutton, completedButton, errorMessage, successMessage] =
+    operationConfig[operation]
   const { pollModal, closePollModal, setPollTrigger, setPollsTrigger } = useGlobalStates()
   const { isPending, isError, writeContractAsync } = useWriteContract()
 
@@ -74,9 +70,9 @@ const PollForm = ({ operation, poll }: { operation: string; poll?: PollType }) =
     }
 
     await writeContractAsync({
-      address: contractAddress.address as Address,
-      abi: contractABI.abi,
-      functionName,
+      abi: DAAP_VOTES_ABI,
+      address: CONTRACT_ADDRESS[chainId || 31337],
+      functionName: poll ? 'updatePoll' : 'createPoll',
       args: poll
         ? [poll?.id, image, title, description, date2BigInt(startsAt), date2BigInt(endsAt)]
         : [image, title, description, date2BigInt(startsAt), date2BigInt(endsAt)]
@@ -196,11 +192,10 @@ const PollForm = ({ operation, poll }: { operation: string; poll?: PollType }) =
           <button
             type="submit"
             disabled={isPending}
-            className={`w-full h-12 rounded-full font-bold ${
-              isPending
-                ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-400 text-gray-400'
-            }`}
+            className={`w-full h-12 rounded-full font-bold ${isPending
+              ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-400 text-gray-400'
+              }`}
           >
             {isPending ? `${pendingbutton}` : `${completedButton}`}
           </button>
@@ -212,8 +207,9 @@ const PollForm = ({ operation, poll }: { operation: string; poll?: PollType }) =
 
 const DeletePoll = ({ operation, poll }: { operation: string; poll?: PollType }) => {
   const router = useRouter()
-  const [functionName, pendingbutton, completedButton, errorMessage, successMessage] =
-    operationConfig[operation as 'Delete Poll']
+  const { chainId } = useAccount()
+  const [pendingbutton, completedButton, errorMessage, successMessage] =
+    operationConfig[operation]
   const { pollModal, closePollModal } = useGlobalStates()
   const { isPending, writeContractAsync } = useWriteContract()
 
@@ -223,10 +219,10 @@ const DeletePoll = ({ operation, poll }: { operation: string; poll?: PollType })
     }
 
     const hash = await writeContractAsync({
-      address: contractAddress.address as Address,
-      abi: contractABI.abi,
-      functionName,
-      args: [poll?.id]
+      abi: DAAP_VOTES_ABI,
+      address: CONTRACT_ADDRESS[chainId || 31337],
+      functionName: 'deletePoll',
+      args: [poll!.id]
     })
 
     if (!hash) {
@@ -265,11 +261,10 @@ const DeletePoll = ({ operation, poll }: { operation: string; poll?: PollType })
         <button
           onClick={deletePoll}
           disabled={isPending}
-          className={`w-full h-12 mt-2 rounded-full text-sm ${
-            isPending
-              ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
-              : 'bg-red-600 hover:bg-red-400'
-          }`}
+          className={`w-full h-12 mt-2 rounded-full text-sm ${isPending
+            ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
+            : 'bg-red-600 hover:bg-red-400'
+            }`}
         >
           {isPending ? `${pendingbutton}` : `${completedButton}`}
         </button>
@@ -283,13 +278,14 @@ const CreateContestant = ({
   operation,
   checkAddressContested
 }: {
-  id: BigInt
+  id: bigint
   operation: string
   checkAddressContested: () => boolean
 }) => {
+  const { chainId } = useAccount()
   const { setPollTrigger, setContestantsTrigger } = useGlobalStates()
-  const [functionName, pendingbutton, completedButton, errorMessage, successMessage] =
-    operationConfig[operation as 'Become a Contestant']
+  const [ pendingbutton, completedButton, errorMessage, successMessage] =
+    operationConfig[operation]
   const { pollModal, closePollModal } = useGlobalStates()
   const { isPending, writeContractAsync } = useWriteContract()
 
@@ -313,9 +309,9 @@ const CreateContestant = ({
 
     const { name, url } = data
     const hash = await writeContractAsync({
-      address: contractAddress.address as Address,
-      abi: contractABI.abi,
-      functionName,
+      abi: DAAP_VOTES_ABI,
+      address: CONTRACT_ADDRESS[chainId || 31337],
+      functionName: 'contest',
       args: [id, name, url]
     })
 
@@ -378,11 +374,10 @@ const CreateContestant = ({
           </div>
           <button
             type="submit"
-            className={`w-full h-12 rounded-full ${
-              isPending
-                ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-400 text-gray-400'
-            }`}
+            className={`w-full h-12 rounded-full ${isPending
+              ? 'bg-gray-600 hover:bg-gray-400 text-white cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-400 text-gray-400'
+              }`}
           >
             {isPending ? pendingbutton : completedButton}
           </button>

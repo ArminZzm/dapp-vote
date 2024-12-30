@@ -23,7 +23,7 @@ export const formatAddress: (address: string) => string = (address) => {
   return address.slice(0, 4) + '...' + address.slice(-4)
 }
 
-export const defaultStringifyWithBigInt: (obj: any) => string = (obj) => {
+export const defaultStringifyWithBigInt: (obj: object) => string = (obj) => {
   return JSON.stringify(obj, (key, value) => {
     if (typeof value === 'bigint') {
       return value.toString()

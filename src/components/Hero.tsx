@@ -23,6 +23,10 @@ const Hero = () => {
         A beauty pageantry is a competition that has traditionally focused on judging and rankingF
         the physical...
       </p>
+      <p className="mt-8">
+        The smart contract has been deployed on the Sepolia network, and the contract address is
+        0x8d4C97703FB59949fC90fFF0AC92f056405f5c5f.
+      </p>
       <button
         onClick={openModal}
         className="mt-8 w-[148px] h-[45px] border border-solid border-gray-400 rounded-full bg-white hover:bg-opacity-20 text-black font-semibold hover:text-white"
